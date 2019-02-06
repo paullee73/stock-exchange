@@ -1,0 +1,9 @@
+model:
+  image: tp33/django
+  external_links:
+    - mysql:db
+  volumes:
+    - ./app:/app
+  ports:
+    - "8000:8000"
+  command: bash -c "python stockexchange/manage.py migrate && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
