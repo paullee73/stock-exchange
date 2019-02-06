@@ -22,7 +22,11 @@ import re
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),    
-    re_path(r'^user/create$', views.createUser),
+    re_path(r'^user/create$', views.CreateUser),
     re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.ViewOrUpdateUser),
     re_path(r'^user/(?P<uniqueID>[0-9]+)/delete$', views.DeleteUser),
+
+    re_path(r'^stock/create$', views.CreateStock),
+    re_path(r'^stock/(?P<uniqueID>[0-9]+)$', views.ViewOrUpdateStock),
+    re_path(r'^stock/(?P<uniqueID>[0-9]+)/delete$', views.DeleteStock),
 ]
