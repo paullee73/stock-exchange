@@ -1,0 +1,49 @@
+[
+	{
+		"model": "stockapp.user", 
+		"pk": 1, 
+		"fields": {
+			"username": "Main", 
+			"password": "Person", 
+			"balance": "1000.20"
+		}
+	}, 
+	
+	{
+		"model": "stockapp.user", 
+		"pk": 2, 
+		"fields": {
+			"username": "App", 
+			"password": "Person", 
+			"balance": "13.00"} 
+	}, 
+
+	{
+		"model": "stockapp.user", 
+		"pk": 3, 
+		"fields": {
+			"username": "Richard", 
+			"password": "Pastel", 
+			"balance": "15.28" 
+		}
+	},
+
+	{
+		"model": "stockapp.user", 
+		"pk": 4, 
+		"fields": {
+			"username": "dylan", 
+			"password": "nguyen", 
+			"balance": "12.00"
+		}
+	},
+
+	{
+		"model": "stockapp.stock",
+		 "pk": 1, 
+		 "fields": {
+		 "ticker_sym": "AAPL",
+		  "user": 1
+		}
+	}
+]
