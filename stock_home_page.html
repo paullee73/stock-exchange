@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* set font for webpage */
+body {font-family: Arial, Helvetica, sans-serif;}
+form.style1 input[type=text] {
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	width: 50%;
+	background: #f1f1f1;
+}
+form.style1 button {
+	float: left;
+	width: 20%;
+	padding: 10px;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Welcome to the Stock Exchange</h1>
+
+<form class="style1" method="POST" action="">
+	Login:<br>
+		<input type="text" placeholder="username" name="username">
+		<input type="text" placeholder="password" name="password">
+		<br><br><br>
+		<br><br>
+	<button type="submit" value="Submit">Login</button>
+	<br><br><br>
+	<br><br><br>
+</form>
+ 
+<form class="style1" method="POST" action="">
+	<b>No account? sign up:</b><br>
+	Create New User:<br>
+		<input type="text" placeholder="username" name="username">
+		<input type="text" placeholder="password" name="password">
+		<br><br>
+		<br><br><br>
+	<button type="submit" value="Submit">Create Account</button>
+</form>
+
+</body>
+</html>
