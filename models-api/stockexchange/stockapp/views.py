@@ -120,3 +120,13 @@ def DeleteStock(request, uniqueID):
 		owner = stockToDelete.user
 		stockToDelete.delete()
 		return JsonResponse({'ticker': ticker, 'user': owner.id})
+
+def SelectAllStock(request):
+	if(request.method == "GET"):
+		data = list(Stock.objects.all().values())
+	return JsonResponse({'data': data})
+
+def SelectAllUsers(request):
+	if(request.method == "GET"):
+		data = list(Users.objects.values())
+	return JsonResponse({'data': data})

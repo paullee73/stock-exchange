@@ -1,9 +1,33 @@
-model:
+models:
   image: tp33/django
+  container_name: models
   external_links:
     - mysql:db
   volumes:
-    - ./app:/app
+    - ./models-api:/app
   ports:
-    - "8000:8000"
+    - "8001:8000"
   command: bash -c "python stockexchange/manage.py makemigrations && python stockexchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
+
+exp:
+  image: tp33/django
+  container_name: exp
+  links:
+    - models:models-api
+  volumes:
+    - ./exp-api:/app
+  ports:
+    - "8002:8000"
+  command: bash -c "mod_wsgi-express start-server --working-directory /app/exp --reload-on-changes /app/exp/exp/wsgi.py"
+
+# web:
+#   image: tp33/django
+#   container_name: web
+#   links:
+#     - exp:exp-api
+#   volumes:
+#     -./web:/app
+#   ports:
+#     - "8000:8000"
+#   command: bash -c "mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+

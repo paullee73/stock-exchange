@@ -26,6 +26,7 @@ urlpatterns = [
     re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.ViewOrUpdateUser),
     re_path(r'^user/(?P<uniqueID>[0-9]+)/delete$', views.DeleteUser),
 
+    re_path(r'^stock/item_detail$', views.SelectAllStock),
     re_path(r'^stock/create$', views.CreateStock),
     re_path(r'^stock/(?P<uniqueID>[0-9]+)$', views.ViewOrUpdateStock),
     re_path(r'^stock/(?P<uniqueID>[0-9]+)/delete$', views.DeleteStock),
