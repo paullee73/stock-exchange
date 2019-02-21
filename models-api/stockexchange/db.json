@@ -45,7 +45,7 @@
 		 "ticker_sym": "AAPL",
 		  "user": 1
 		}
-	}
+	},
 
 	{
 		"model": "stockapp.stock",
@@ -54,7 +54,7 @@
 		 "ticker_sym": "AAPL",
 		  "user": 1
 		}
-	}
+	},
 
 	{
 		"model": "stockapp.stock",
@@ -63,7 +63,7 @@
 		 "ticker_sym": "AAPL",
 		  "user": 1
 		}
-	}
+	},
 
 	{
 		"model": "stockapp.stock",
@@ -72,13 +72,13 @@
 		 "ticker_sym": "AMZN",
 		  "user": 4
 		}
-	}
+	},
 
 	{
 		"model": "stockapp.stock",
 		 "pk": 5, 
 		 "fields": {
-		 "ticker_sym": "NASDAQ",
+		 "ticker_sym": "MU",
 		  "user": 3
 		}
 	}
