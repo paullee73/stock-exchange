@@ -19,6 +19,5 @@ from webapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('web/', include('webapp.urls'))
+    path('', include('webapp.urls'))
 ]
