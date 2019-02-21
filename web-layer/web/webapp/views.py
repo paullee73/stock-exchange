@@ -6,16 +6,15 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import json
-# Create your views here.
 
+# Create your views here.
 def index(request):
     return HttpResponse("Test")
 
-def StockAll(request):
+def displayStocks(request):
 	if (request.method == 'GET'):
-		req = urllib.request.Request("http://models-api:8000/stockapp/stock/item_detail")
+		req = urllib.request.Request("http://exp-api:8000/exp/stock/item_detail")
 		resp_json = urllib.request.urlopen(req).read().decode('utf-8')
 		resp = json.loads(resp_json)
-	return JsonResponse(resp)
-
-
+		resplist = resp['data']
+	return render(request, 'item_detail.html', {'resplist' : resplist})

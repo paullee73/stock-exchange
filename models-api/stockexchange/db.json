@@ -46,4 +46,40 @@
 		  "user": 1
 		}
 	}
+
+	{
+		"model": "stockapp.stock",
+		 "pk": 2, 
+		 "fields": {
+		 "ticker_sym": "AAPL",
+		  "user": 1
+		}
+	}
+
+	{
+		"model": "stockapp.stock",
+		 "pk": 3, 
+		 "fields": {
+		 "ticker_sym": "AAPL",
+		  "user": 1
+		}
+	}
+
+	{
+		"model": "stockapp.stock",
+		 "pk": 4, 
+		 "fields": {
+		 "ticker_sym": "AMZN",
+		  "user": 4
+		}
+	}
+
+	{
+		"model": "stockapp.stock",
+		 "pk": 5, 
+		 "fields": {
+		 "ticker_sym": "NASDAQ",
+		  "user": 3
+		}
+	}
 ]
