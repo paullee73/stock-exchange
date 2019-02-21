@@ -7,4 +7,5 @@ import re
 urlpatterns = [
 	path('admin/', admin.site.urls),
     re_path(r'^stock/item_detail$', views.StockAll),
+    re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.UserInf),
 ]

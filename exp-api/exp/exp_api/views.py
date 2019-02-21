@@ -18,4 +18,11 @@ def StockAll(request):
 		resp = json.loads(resp_json)
 	return JsonResponse(resp)
 
+def UserInf(request, uniqueID):
+	if (request.method == 'GET'):
+		req = urllib.request.Request("http://models-api:8000/stockapp/user/" + uniqueID + "" )
+		resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+		resp = json.loads(resp_json)
+	return JsonResponse(resp)
+
 

@@ -6,5 +6,6 @@ import re
 
 urlpatterns = [
  	path('admin/', admin.site.urls),
- 	path('', views.displayStocks, name='index')
+ 	path('', views.displayStocks, name='index'),
+ 	re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.userDetail, name = 'user_detail')
 ]
