@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,6 +6,9 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import json
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from webapp.forms import SignUpForm
 
 # Create your views here.
 
@@ -16,7 +19,28 @@ def index(request):
 
 def displayHome(request):
     if(request.method == 'GET'):
-        return render(request, 'base_header.html')
+        return render(request, 'index.html')
+
+
+def displaySignUp(request):
+    if(request.method == 'POST'):
+        form = SignUpForm(request.POST)
+        if(form.is_valid()):
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            post_data = {'username': username,
+                         'password': password, 'balance': 0}
+            post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+            req = urllib.request.Request(
+                'http://exp-api:8000/exp/user/create', data=post_encoded, method='POST')
+            resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+            # resp = json.loads(resp_json)
+            # if not resp:
+            #     return redirect('stocks')
+            return redirect('index')
+    else:
+        form = SignUpForm()
+        return render(request, 'signup.html', {'form': form})
 
 
 def displayStocks(request):

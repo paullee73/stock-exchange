@@ -5,7 +5,8 @@ from django.conf.urls import url
 import re
 
 urlpatterns = [
-	path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     re_path(r'^stock/item_detail$', views.StockAll),
     re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.UserInf),
+    re_path(r'^user/create', views.CreateUser),
 ]

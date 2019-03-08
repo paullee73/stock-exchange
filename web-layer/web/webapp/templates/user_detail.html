@@ -1,37 +1,19 @@
-<head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-</style>
-</head>
+{% extends "base_header.html" %}
+{% load static %}
+{% block content %}
 
-<nav class="navbar navbar-default bg-dark text-white" style="">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand">StockValue</a>
-    </div>
-    
-    <ul class="nav navbar-nav">
-      <li class="nav-item active" style=""><a>User Details</a></li>
-      <li class="nav-item"><a>User Profile</a></li>
-      <li class="nav-item"><a>Popular</a></li>
-      <li class="nav-item"><a>Other</a></li>
-	</ul>
-</nav>
 <h2>Users</h2>
 <p>User Profile</p>
 <table>
-<tr>
-  <th>User</th>
-  <th>Password</th>
-  <th>Balance</th>
-</tr>
-<tr>
-  <td> {{ resp.username }}</td>
-  <td> {{ resp.password}}</td>
-  <td> {{ resp.balance }}</td>
-</tr> 
+  <tr>
+    <th>User</th>
+    <th>Password</th>
+    <th>Balance</th>
+  </tr>
+  <tr>
+    <td> {{ resp.username }}</td>
+    <td> {{ resp.password}}</td>
+    <td> {{ resp.balance }}</td>
+  </tr>
 </table>
+{% endblock %}
