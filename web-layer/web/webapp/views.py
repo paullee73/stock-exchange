@@ -36,6 +36,8 @@ def displayLogIn(request):
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
             resp = json.loads(resp_json)
             if 'GOOD' in resp:
+                response = HttpResponse('Login success.')
+                response.set_cookie("auth", resp['auth'])
                 return render(request, 'login.html', {'loggedIn': 'Welcome ' + username + '!'})
             else:
                 return render(request, 'error.html', {'error': 'Incorrect credentials'})
