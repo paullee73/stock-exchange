@@ -9,4 +9,5 @@ urlpatterns = [
     re_path(r'^stock/item_detail$', views.StockAll),
     re_path(r'^user/(?P<uniqueID>[0-9]+)$', views.UserInf),
     re_path(r'^user/create', views.CreateUser),
+    re_path(r'^user/login', views.LogIn),
 ]

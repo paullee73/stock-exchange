@@ -10,6 +10,20 @@ def index(request):
     return HttpResponse("Test")
 
 
+def CreateAuthentication(request):
+    if(request.method == "POST"):
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            user = User.objects.get(username=username)
+            if user.password == password:
+                return JsonResponse({'GOOD': 'Signed in'})
+            else:
+                return JsonResponse({'ERROR': 'Invalid input'})
+        except ObjectDoesNotExist:
+            return JsonResponse({'ERROR': 'No user'})
+
+
 def CreateUser(request):
     if(request.method == "POST"):
         username = request.POST['username']

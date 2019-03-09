@@ -22,6 +22,28 @@ def displayHome(request):
         return render(request, 'index.html')
 
 
+def displayLogIn(request):
+    if(request.method == 'POST'):
+        form = SignUpForm(request.POST)
+        if(form.is_valid()):
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            post_data = {'username': username,
+                         'password': password}
+            post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+            req = urllib.request.Request(
+                "http://exp-api:8000/exp/user/login", data=post_encoded, method='POST')
+            resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+            resp = json.loads(resp_json)
+            if 'GOOD' in resp:
+                return render(request, 'login.html', {'loggedIn': 'Welcome ' + username + '!'})
+            else:
+                return render(request, 'error.html', {'error': 'Incorrect credentials'})
+    else:
+        form = SignUpForm()
+        return render(request, 'login.html', {'form': form})
+
+
 def displaySignUp(request):
     if(request.method == 'POST'):
         form = SignUpForm(request.POST)

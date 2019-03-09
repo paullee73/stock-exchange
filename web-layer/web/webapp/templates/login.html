@@ -1,0 +1,18 @@
+{% extends 'base_header.html' %}
+{% load static %}
+{% block content %}
+<center style="margin-top: 5%">
+  {% if not loggedIn %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type=" submit">Log In</button>
+  </form>
+  {% endif %}
+  <h3>
+    {{ loggedIn }}
+    {{ error }}
+  </h3>
+</center>
+{% endblock %}
