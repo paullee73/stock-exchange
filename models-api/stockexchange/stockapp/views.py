@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.core import serializers
-from .models import User, Stock
+from .models import User, Stock, Authenticator
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
+import os
+import hmac
+from django.conf import settings
+import datetime
 
 
 def index(request):
@@ -16,8 +20,19 @@ def CreateAuthentication(request):
         password = request.POST['password']
         try:
             user = User.objects.get(username=username)
+            authenticator = hmac.new(
+                key=settings.SECRET_KEY.encode('utf-8'),
+                msg=os.urandom(32),
+                digestmod='sha256',
+            ).hexdigest()
             if user.password == password:
-                return JsonResponse({'GOOD': 'Signed in'})
+                new_auth = Authenticator(
+                    user_id=user.id, authenticator=authenticator, date_created=datetime.date.today())
+                new_auth.save()
+                data = {}
+                data['GOOD'] = 'Signed in'
+                data['auth'] = authenticator
+                return JsonResponse(data)
             else:
                 return JsonResponse({'ERROR': 'Invalid input'})
         except ObjectDoesNotExist:
