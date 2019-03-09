@@ -8,13 +8,34 @@ import urllib.error
 import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from webapp.forms import SignUpForm
+from webapp.forms import SignUpForm, StockForm
 
 # Create your views here.
 
 
-def index(request):
-    return HttpResponse("Test")
+def addStock(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return render(request, 'login.html')
+    if(request.method == 'POST'):
+        form = StockForm(request.POST)
+        if(form.is_valid()):
+            ticker = form.cleaned_data.get('ticker')
+            post_data = {}
+            post_data['ticker'] = ticker
+            post_data['auth'] = auth
+            post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+            req = urllib.request.Request(
+                "http://exp-api:8000/exp/stock/create", data=post_encoded, method='POST')
+            resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+            resp = json.loads(resp_json)
+            if 'ERROR' in resp:
+                return render(request, 'error.html', {'error': 'Invalid authentication'})
+            else:
+                return render(request, 'item_detail.html')
+    else:
+        form = StockForm()
+        return render(request, 'create_stock.html', {'form': form})
 
 
 def displayHome(request):
@@ -75,11 +96,21 @@ def displayStocks(request):
     return render(request, 'item_detail.html', {'resplist': resplist})
 
 
+def logout(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return render(request, 'login.html')
+    post_data = {'auth': auth}
+    post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+    req = urllib.request.Request(
+        "http://exp-api:8000/exp/logout", data=post_encoded, method='POST')
+    return HttpResponse(auth)
+
+
 def userDetail(request, uniqueID):
     if (request.method == 'GET'):
         req = urllib.request.Request(
             "http://exp-api:8000/exp/user/" + uniqueID + "")
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
-    # return JsonResponse({'resp' : resp})
     return render(request, 'user_detail.html', {'resp': resp})

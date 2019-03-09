@@ -32,7 +32,7 @@
               <a href="{% url 'stocks' %}">Exchange</a>
             </li>
             <li>
-              <a href="{% url 'stocks' %}">Profile</a>
+              <a href="{% url 'add' %}">Add</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -43,6 +43,10 @@
             <li>
               <a href="{% url 'login' %}">
                 <span class="glyphicon glyphicon-log-in"></span> Login</a>
+            </li>
+            <li>
+              <a href="{% url 'logout' %}">
+                <span class="glyphicon glyphicon-log-out"></span> Logout</a>
             </li>
           </ul>
         </div>

@@ -32,4 +32,5 @@ urlpatterns = [
     re_path(r'^stock/(?P<uniqueID>[0-9]+)/delete$', views.DeleteStock),
 
     re_path(r'^create/authentication', views.CreateAuthentication),
+    re_path(r'^create/authentication', views.Logout),
 ]

@@ -102,18 +102,18 @@ def DeleteUser(request, uniqueID):
 
 def CreateStock(request):
     if(request.method == "POST"):
-        user = None
+        auth = None
         ticker = request.POST['ticker']
-        user_id = request.POST['user_id']
-        if(len(ticker) == 0 or len(user_id) == 0):
+        auth = request.POST['auth']
+        if(len(ticker) == 0):
             return JsonResponse({'ERROR': 'Invalid input'})
         try:
-            user = User.objects.get(pk=user_id)
+            auth = Authenticator.objects.get(authenticator=auth)
         except ObjectDoesNotExist:
-            return JsonResponse({'ERROR': 'User with that ID does not exist'})
-        newStock = Stock(ticker_sym=ticker, user=user)
+            return JsonResponse({'ERROR': 'Not authenticated'})
+        newStock = Stock(ticker_sym=ticker, user_id=auth.user_id)
         newStock.save()
-        return JsonResponse({'ticker symbol': ticker, 'owner': user_id})
+        return JsonResponse({'ticker symbol': ticker, 'owner': auth.user_id})
 
 
 def ViewOrUpdateStock(request, uniqueID):
@@ -153,6 +153,14 @@ def DeleteStock(request, uniqueID):
         owner = stockToDelete.user
         stockToDelete.delete()
         return JsonResponse({'ticker': ticker, 'user': owner.id})
+
+
+def Logout(request):
+    if(request.method == "POST"):
+        auth = request.POST["auth"]
+        return HttpResponse(authDelete)
+        authDelete = Authenticator.objects.get(authenticator=auth)
+        authDelete.delete()
 
 
 def SelectAllStock(request):

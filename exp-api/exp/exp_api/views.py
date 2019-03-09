@@ -14,6 +14,30 @@ def index(request):
     return HttpResponse("Test")
 
 
+def Logout(request):
+    if(request.method == 'POST'):
+        auth = request.POST['auth']
+        post_data = {'auth': auth}
+        post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+        req = urllib.request.Request(
+            "http://models-api:8000/stockapp/logout", data=post_encoded, method='POST')
+
+
+@csrf_exempt
+def CreateStock(request):
+    if(request.method == 'POST'):
+        ticker = request.POST['ticker']
+        auth = request.POST['auth']
+        post_data = {'ticker': ticker,
+                     'auth': auth}
+        post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+        req = urllib.request.Request(
+            "http://models-api:8000/stockapp/stock/create", data=post_encoded, method='POST')
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+        resp = json.loads(resp_json)
+        return JsonResponse(resp)
+
+
 def StockAll(request):
     if (request.method == 'GET'):
         req = urllib.request.Request(

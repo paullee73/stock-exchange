@@ -6,3 +6,8 @@ class SignUpForm(forms.Form):
         attrs={'placeholder': 'Enter username'}))
     password = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter password'}))
+
+
+class StockForm(forms.Form):
+    ticker = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter stock symbol'}))
