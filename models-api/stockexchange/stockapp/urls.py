@@ -30,4 +30,6 @@ urlpatterns = [
     re_path(r'^stock/create$', views.CreateStock),
     re_path(r'^stock/(?P<uniqueID>[0-9]+)$', views.ViewOrUpdateStock),
     re_path(r'^stock/(?P<uniqueID>[0-9]+)/delete$', views.DeleteStock),
+
+    re_path(r'^create/authentication', views.CreateAuthentication),
 ]
