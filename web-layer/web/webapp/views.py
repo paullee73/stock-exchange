@@ -32,7 +32,9 @@ def addStock(request):
             if 'ERROR' in resp:
                 return render(request, 'error.html', {'error': 'Invalid authentication'})
             else:
-                return render(request, 'item_detail.html')
+                request.method = "GET"
+                response = displayStocks(request)
+                return response
     else:
         form = StockForm()
         return render(request, 'create_stock.html', {'form': form})
@@ -58,7 +60,7 @@ def displayLogIn(request):
             resp = json.loads(resp_json)
             if 'GOOD' in resp:
                 response = render(request, 'login.html', {'loggedIn': 'Welcome ' + username + '!'})
-                response.set_cookie("auth", resp['auth'])
+                response.set_cookie('auth', resp['auth'])
                 return response
             else:
                 return render(request, 'error.html', {'error': 'Incorrect credentials'})
@@ -97,17 +99,15 @@ def displayStocks(request):
 
 
 def logout(request):
-    auth = request.COOKIES['auth']
-    if not auth:
-        return render(request, 'login.html')
-    post_data = {'auth': auth}
-    post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
-    req = urllib.request.Request(
-        "http://exp-api:8000/exp/logout", data=post_encoded, method='POST')
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-    resp = json.loads(resp_json)
-    respauth = resp['auth']
-    return HttpResponse(respauth)
+	auth = request.COOKIES.get('auth')
+	post_data = {'auth': auth}
+	post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+	req = urllib.request.Request(
+		"http://exp-api:8000/exp/logout", data=post_encoded, method='POST')
+	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	resp = json.loads(resp_json)
+	respauth = resp['auth']
+	return render(request, 'index.html')
 
 
 def userDetail(request, uniqueID):

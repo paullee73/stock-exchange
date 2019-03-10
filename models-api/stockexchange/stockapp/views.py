@@ -156,12 +156,14 @@ def DeleteStock(request, uniqueID):
 
 
 def Logout(request):
+    data = {}
     if(request.method == "POST"):
-        #auth = request.POST["auth"]
-        #authDelete = Authenticator.objects.get(authenticator=auth)
-        #uid = authDelete.authenticator
-        #authDelete.delete()
-        return JsonResponse({'auth': "hi"})
+        auth = request.POST.get('auth')
+        authDelete = Authenticator.objects.get(authenticator=auth)
+        uid = authDelete.authenticator
+        authDelete.delete()
+        data['auth'] = uid
+        return JsonResponse(data)
 
 
 def SelectAllStock(request):
