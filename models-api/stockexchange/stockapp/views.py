@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import os
 import hmac
 from django.conf import settings
+from django.contrib.auth.hashers import *
 import datetime
 
 
@@ -25,7 +26,7 @@ def CreateAuthentication(request):
                 msg=os.urandom(32),
                 digestmod='sha256',
             ).hexdigest()
-            if user.password == password:
+            if check_password(password, user.password):
                 new_auth = Authenticator(
                     user_id=user.id, authenticator=authenticator, date_created=datetime.date.today())
                 new_auth.save()
@@ -42,7 +43,8 @@ def CreateAuthentication(request):
 def CreateUser(request):
     if(request.method == "POST"):
         username = request.POST['username']
-        password = request.POST['password']
+        unpassword = request.POST['password']
+        password = make_password(unpassword)
         balance = request.POST['balance']
         if(len(username) == 0 or len(password) == 0 or not balance.isdigit()):
             return JsonResponse({'ERROR': 'Invalid input'})
@@ -51,7 +53,7 @@ def CreateUser(request):
                        balance=float(balance))
         newUser.save()
 
-        return JsonResponse({'username': username, 'password': password, 'balance': balance})
+        return JsonResponse({'username': username, 'password': unpassword, 'balance': balance})
 
 
 def ViewOrUpdateUser(request, uniqueID):
