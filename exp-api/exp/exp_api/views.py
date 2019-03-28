@@ -7,11 +7,13 @@ import urllib.parse
 import urllib.error
 import json
 from django.views.decorators.csrf import csrf_exempt
+from kafka import KafkaProducer
 # Create your views here.
 
 
 def index(request):
     return HttpResponse("Test")
+
 
 @csrf_exempt
 def Logout(request):
@@ -27,6 +29,13 @@ def Logout(request):
 
 
 @csrf_exempt
+def PublishKafka(request):
+    producer = KafkaProducer(bootstrap_servers='kafka:9092')
+    producer.send('new-listings-topic',
+                  json.dumps(request).encode('utf-8'))
+
+
+@csrf_exempt
 def CreateStock(request):
     if(request.method == 'POST'):
         ticker = request.POST['ticker']
@@ -38,6 +47,7 @@ def CreateStock(request):
             "http://models-api:8000/stockapp/stock/create", data=post_encoded, method='POST')
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
+        PublishKafka(request)
         return JsonResponse(resp)
 
 
