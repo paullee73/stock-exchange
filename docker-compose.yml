@@ -14,6 +14,7 @@ exp:
   container_name: exp
   links:
     - models:models-api
+    - kafka:kafka
   volumes:
     - ./exp-api:/app
   ports:
@@ -31,26 +32,23 @@ web:
     - "8000:8000"
   command: bash -c "mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
-# kafka:
-#    image: spotify/kafka
-#    container_name: kafka
-#    environment:
-#       ADVERTISED_HOST: kafka
-#       ADVERTISED_PORT: 9092
-#    hostname: kafka
+kafka:
+   image: spotify/kafka
+   container_name: kafka
+   environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+   hostname: kafka
    
-# es:
-#    image: elasticsearch:2.0
-#    container_name: es
-#    ports:
-#       - "9200:9200"
+es:
+   image: elasticsearch:2.0
+   container_name: es
+   ports:
+      - "9200:9200"
 
-# batch:
-#    image: tp33/django
-#    container_name: batch
-#    volumes:
-#     - ./batch:/app
-#    links:
-#       - kafka:kafka
-#       - es:es
-#     command: <run a python script that pulls messages from Kafka and indexs that in ES>
+batch:
+   image: tp33/django
+   container_name: batch
+   links:
+      - kafka:kafka
+      - es:es
