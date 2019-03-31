@@ -7,7 +7,7 @@ models:
     - ./models-api:/app
   ports:
     - "8001:8000"
-  command: bash -c "python stockexchange/manage.py makemigrations && python stockexchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
+  command: bash -c "python stockexchange/manage.py makemigrations && python stock-exchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
 
 exp:
   image: tp33/django
@@ -31,3 +31,26 @@ web:
     - "8000:8000"
   command: bash -c "mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
+# kafka:
+#    image: spotify/kafka
+#    container_name: kafka
+#    environment:
+#       ADVERTISED_HOST: kafka
+#       ADVERTISED_PORT: 9092
+#    hostname: kafka
+   
+# es:
+#    image: elasticsearch:2.0
+#    container_name: es
+#    ports:
+#       - "9200:9200"
+
+# batch:
+#    image: tp33/django
+#    container_name: batch
+#    volumes:
+#     - ./batch:/app
+#    links:
+#       - kafka:kafka
+#       - es:es
+#     command: <run a python script that pulls messages from Kafka and indexs that in ES>
