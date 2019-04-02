@@ -11,3 +11,8 @@ class SignUpForm(forms.Form):
 class StockForm(forms.Form):
     ticker = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Enter stock symbol'}))
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Search'}))

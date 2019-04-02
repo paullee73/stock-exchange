@@ -8,7 +8,7 @@ import urllib.error
 import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from webapp.forms import SignUpForm, StockForm
+from webapp.forms import SignUpForm, StockForm, SearchForm
 
 # Create your views here.
 
@@ -40,6 +40,27 @@ def addStock(request):
         return render(request, 'create_stock.html', {'form': form})
 
 
+def searchStock(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return render(request, 'error.html', {'error': 'Invalid authentication'})
+    if(request.method == 'POST'):
+        form = SearchForm(request.POST)
+        if(form.is_valid()):
+            query = form.cleaned_data.get('query')
+            post_data = {}
+            post_data['query'] = query
+            post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+            req = urllib.request.Request(
+                "http://exp-api:8000/exp/stock/search", data=post_encoded, method='POST')
+            resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+            resp = json.loads(resp_json)
+            return render(request, 'search_results.html', {'error': resp['hits']['hits']})
+    else:
+        form = SearchForm()
+        return render(request, 'search_stock.html', {'form': form})
+
+
 def displayHome(request):
     if(request.method == 'GET'):
         return render(request, 'index.html')
@@ -59,7 +80,8 @@ def displayLogIn(request):
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
             resp = json.loads(resp_json)
             if 'GOOD' in resp:
-                response = render(request, 'login.html', {'loggedIn': 'Welcome ' + username + '!'})
+                response = render(request, 'login.html', {
+                                  'loggedIn': 'Welcome ' + username + '!'})
                 response.set_cookie('auth', resp['auth'])
                 return response
             else:
@@ -99,18 +121,18 @@ def displayStocks(request):
 
 
 def logout(request):
-	response = render(request, 'index.html')
-	if(request.COOKIES.get('auth')):
-		auth = request.COOKIES.get('auth')
-		post_data = {'auth': auth}
-		post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
-		req = urllib.request.Request(
-			"http://exp-api:8000/exp/logout", data=post_encoded, method='POST')
-		resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-		resp = json.loads(resp_json)
-		respauth = resp['auth']
-		response.delete_cookie('auth')
-	return response
+    response = render(request, 'index.html')
+    if(request.COOKIES.get('auth')):
+        auth = request.COOKIES.get('auth')
+        post_data = {'auth': auth}
+        post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
+        req = urllib.request.Request(
+            "http://exp-api:8000/exp/logout", data=post_encoded, method='POST')
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+        resp = json.loads(resp_json)
+        respauth = resp['auth']
+        response.delete_cookie('auth')
+    return response
 
 
 def userDetail(request, uniqueID):

@@ -12,4 +12,5 @@ urlpatterns = [
     re_path(r'^user/login', views.LogIn),
     re_path(r'^stock/create', views.CreateStock),
     re_path(r'^logout', views.Logout),
+    re_path(r'^stock/search', views.SearchStock),
 ]
