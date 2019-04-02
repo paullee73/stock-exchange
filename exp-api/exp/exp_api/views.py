@@ -47,7 +47,10 @@ def CreateStock(request):
             "http://models-api:8000/stockapp/stock/create", data=post_encoded, method='POST')
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
-        PublishKafka(request)
+        kafka_info = {}
+        kafka_info['ticker'] = resp['ticker symbol']
+        kafka_info['id'] = resp['id']
+        PublishKafka(kafka_info)
         return JsonResponse(resp)
 
 

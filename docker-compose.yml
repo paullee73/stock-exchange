@@ -7,7 +7,7 @@ models:
     - ./models-api:/app
   ports:
     - "8001:8000"
-  command: bash -c "python stockexchange/manage.py makemigrations && python stock-exchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
+  command: bash -c "python stockexchange/manage.py makemigrations && python stockexchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
 
 exp:
   image: tp33/django
@@ -47,8 +47,11 @@ es:
       - "9200:9200"
 
 batch:
-   image: tp33/django
-   container_name: batch
-   links:
-      - kafka:kafka
-      - es:es
+  image: tp33/django
+  container_name: batch
+  links:
+    - kafka:kafka
+    - es:es
+  volumes:
+    - ./batch:/app
+  command: bash -c "python scrp.py"
