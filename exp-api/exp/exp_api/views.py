@@ -8,6 +8,7 @@ import urllib.error
 import json
 from django.views.decorators.csrf import csrf_exempt
 from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 # Create your views here.
 
 
@@ -26,6 +27,16 @@ def Logout(request):
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
         return JsonResponse(resp)
+
+
+@csrf_exempt
+def SearchStock(request):
+    if(request.method == 'POST'):
+        query = request.POST['query']
+        es = Elasticsearch(['es'])
+        result = es.search(index='listing_indexer', body={
+            'query': {'query_string': {'query': query}}, 'size': 10})
+        return JsonResponse(result)
 
 
 @csrf_exempt

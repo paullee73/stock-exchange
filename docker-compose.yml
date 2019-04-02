@@ -15,6 +15,7 @@ exp:
   links:
     - models:models-api
     - kafka:kafka
+    - es:es
   volumes:
     - ./exp-api:/app
   ports:
