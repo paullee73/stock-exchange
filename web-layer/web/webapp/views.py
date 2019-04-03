@@ -55,7 +55,13 @@ def searchStock(request):
                 "http://exp-api:8000/exp/stock/search", data=post_encoded, method='POST')
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
             resp = json.loads(resp_json)
-            return render(request, 'search_results.html', {'error': resp['hits']['hits']})
+            if(len(resp['hits']['hits']) == 0):
+                return render(request, 'search_results.html', {'error': "No matches found"})
+            else:
+                res = []
+                for ele in resp['hits']['hits']:
+                    res.append(ele['_source'])
+                return render(request, 'search_results.html', {'error': res})
     else:
         form = SearchForm()
         return render(request, 'search_stock.html', {'form': form})

@@ -2,8 +2,10 @@
 {% load static %}
 {% block content %}
 <center style="margin-top: 5%">
+    {% for key in error %}
     <h3 style="color:red;">
-        {{ error }}
+        {{ key }}
     </h3>
+    {% endfor %}
 </center>
 {% endblock %}
