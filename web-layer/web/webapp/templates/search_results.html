@@ -8,6 +8,7 @@
                 <th scope="col">Stock ID</th>
                 <th scope="col">Stock</th>
                 <th scope="col">Username</th>
+                <th scope="col">Price</th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                 <td>{{ key.id}}</td>
                 <td>{{ key.ticker }}</td>
                 <td>{{ key.owner_name}}</td>
+                <td>{{ key.price}}</td>
             </tr>
             {% endfor %}
         </tbody>

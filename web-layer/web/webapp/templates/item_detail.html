@@ -10,6 +10,7 @@
         <th scope="col">Stock</th>
         <th scope="col">Username</th>
         <th scope="col">User ID</th>
+        <th scope="col">Price</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td>{{ key.ticker_sym }}</td>
         <td>{{ key.username}}</td>
         <td><a <a href="{% url 'user_detail' key.user_id %}"> {{ key.user_id }}</a></td>
+        <td>{{ key.price}}</td>
       </tr>
       {% endfor %}
     </tbody>
