@@ -117,6 +117,7 @@ def displayStocks(request):
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
         resplist = resp['data']
+        # return render(request, 'error.html', {'error': resplist})
     return render(request, 'item_detail.html', {'resplist': resplist})
 
 
