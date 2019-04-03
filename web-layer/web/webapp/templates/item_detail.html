@@ -2,24 +2,27 @@
 {% load static %}
 {% block content %}
 
-<h2>Stocks</h2>
-<p>Table of Stocks and their Owners</p>
-<table>
-  <tr>
-    <th>Stock</th>
-    <th>ID</th>
-    <th>Username</th>
-    <th>UserID</th>
-  </tr>
-  {% for key in resplist %}
-  <tr>
-    {{ key }}
-    <td> {{ key.ticker_sym }}</td>
-    <td> {{ key.id}}</td>
-    <td> {{ key.username}}</td>
-    <td><a <a href="{% url 'user_detail' key.user_id %}"> {{ key.user_id }}</a></td>
-  </tr>
-  {% endfor %}
-</table>
+<center style="margin-top: 5%">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Stock ID</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Username</th>
+        <th scope="col">User ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key in resplist %}
+      <tr>
+        <td>{{ key.id}}</td>
+        <td>{{ key.ticker_sym }}</td>
+        <td>{{ key.username}}</td>
+        <td><a <a href="{% url 'user_detail' key.user_id %}"> {{ key.user_id }}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</center>
 
 {% endblock %}

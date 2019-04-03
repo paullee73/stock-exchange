@@ -2,15 +2,23 @@
 {% load static %}
 {% block content %}
 <center style="margin-top: 5%">
-    <h3 style="color:red;"></h3>
-    {{ error }}
-    </h3>
-    {% for key in output %}
-    <div>
-        {{ key.id }}
-        {{ key.ticker }}
-        {{ key.owner_name }}
-    </div>
-    {% endfor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Stock ID</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key in output %}
+            <tr>
+                <td>{{ key.id}}</td>
+                <td>{{ key.ticker }}</td>
+                <td>{{ key.owner_name}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </center>
 {% endblock %}
