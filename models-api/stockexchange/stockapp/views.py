@@ -170,8 +170,13 @@ def Logout(request):
 
 def SelectAllStock(request):
     if(request.method == "GET"):
-        data = list(Stock.objects.all().values())
-    return JsonResponse({'data': data})
+        stocks = []
+        for stock in Stock.objects.all().values():
+            # stock['user_id'] = stock['user_id']
+            stock['username'] = User.objects.get(pk=stock['user_id']).username
+            stocks.append(stock)
+        # data = list(Stock.objects.all().values())
+    return JsonResponse({'data': stocks})
 
 
 def SelectAllUsers(request):

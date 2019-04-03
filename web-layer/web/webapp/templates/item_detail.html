@@ -8,12 +8,14 @@
   <tr>
     <th>Stock</th>
     <th>ID</th>
+    <th>Username</th>
     <th>UserID</th>
   </tr>
   {% for key in resplist %}
   <tr>
     <td> {{ key.ticker_sym }}</td>
     <td> {{ key.id}}</td>
+    <td> {{ key.username}}</td>
     <td><a <a href="{% url 'user_detail' key.user_id %}"> {{ key.user_id }}</a></td>
   </tr>
   {% endfor %}
