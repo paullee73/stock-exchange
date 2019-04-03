@@ -2,10 +2,15 @@
 {% load static %}
 {% block content %}
 <center style="margin-top: 5%">
-    {% for key in error %}
-    <h3 style="color:red;">
-        {{ key }}
+    <h3 style="color:red;"></h3>
+    {{ error }}
     </h3>
+    {% for key in output %}
+    <div>
+        {{ key.id }}
+        {{ key.ticker }}
+        {{ key.owner_name }}
+    </div>
     {% endfor %}
 </center>
 {% endblock %}

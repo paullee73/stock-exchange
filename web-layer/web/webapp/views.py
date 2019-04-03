@@ -61,7 +61,7 @@ def searchStock(request):
                 res = []
                 for ele in resp['hits']['hits']:
                     res.append(ele['_source'])
-                return render(request, 'search_results.html', {'error': res})
+                return render(request, 'search_results.html', {'output': res})
     else:
         form = SearchForm()
         return render(request, 'search_stock.html', {'form': form})
