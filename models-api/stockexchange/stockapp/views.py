@@ -115,7 +115,8 @@ def CreateStock(request):
             return JsonResponse({'ERROR': 'Not authenticated'})
         newStock = Stock(ticker_sym=ticker, user_id=auth.user_id)
         newStock.save()
-        return JsonResponse({'ticker symbol': ticker, 'owner': auth.user_id, 'id': newStock.id})
+        owner_name = User.objects.get(pk=auth.user_id).username
+        return JsonResponse({'ticker symbol': ticker, 'owner': auth.user_id, 'owner_name': owner_name, 'id': newStock.id})
 
 
 def ViewOrUpdateStock(request, uniqueID):

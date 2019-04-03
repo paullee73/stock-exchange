@@ -61,6 +61,7 @@ def CreateStock(request):
         kafka_info = {}
         kafka_info['ticker'] = resp['ticker symbol']
         kafka_info['id'] = resp['id']
+        kafka_info['owner_name'] = resp['owner_name']
         PublishKafka(kafka_info)
         return JsonResponse(resp)
 
