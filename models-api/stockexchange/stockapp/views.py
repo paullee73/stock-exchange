@@ -107,16 +107,17 @@ def CreateStock(request):
         auth = None
         ticker = request.POST['ticker']
         auth = request.POST['auth']
+        price = request.POST['price']
         if(len(ticker) == 0):
             return JsonResponse({'ERROR': 'Invalid input'})
         try:
             auth = Authenticator.objects.get(authenticator=auth)
         except ObjectDoesNotExist:
             return JsonResponse({'ERROR': 'Not authenticated'})
-        newStock = Stock(ticker_sym=ticker, user_id=auth.user_id)
+        newStock = Stock(ticker_sym=ticker, user_id=auth.user_id, price=price)
         newStock.save()
         owner_name = User.objects.get(pk=auth.user_id).username
-        return JsonResponse({'ticker symbol': ticker, 'owner': auth.user_id, 'owner_name': owner_name, 'id': newStock.id})
+        return JsonResponse({'ticker symbol': ticker, 'owner': auth.user_id, 'owner_name': owner_name, 'id': newStock.id, 'price': newStock.price})
 
 
 def ViewOrUpdateStock(request, uniqueID):

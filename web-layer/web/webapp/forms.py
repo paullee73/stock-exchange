@@ -10,7 +10,10 @@ class SignUpForm(forms.Form):
 
 class StockForm(forms.Form):
     ticker = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Enter stock symbol'}))
+        attrs={'placeholder': 'Enter Stock Symbol'}))
+    price = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Price'}))
+
 
 
 class SearchForm(forms.Form):

@@ -21,8 +21,18 @@ def addStock(request):
         form = StockForm(request.POST)
         if(form.is_valid()):
             ticker = form.cleaned_data.get('ticker')
+            price =  form.cleaned_data.get('price')
             post_data = {}
             post_data['ticker'] = ticker
+            post_data['price'] = price
+            try:
+                post_data['price'] = float(price)
+            except ValueError:
+                return render(request, 'error.html', {'error': 'Enter numerical value'})
+            # if(str(post_data['price'].isdigit()):
+                # post_data['price'] = float(price)
+            # else:
+                # return render(request, 'error.html', {'error': 'Enter numerical value'})
             post_data['auth'] = auth
             post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
             req = urllib.request.Request(

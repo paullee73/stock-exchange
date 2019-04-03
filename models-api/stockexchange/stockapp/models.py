@@ -10,6 +10,7 @@ class User(models.Model):
 class Stock(models.Model):
     ticker_sym = models.CharField(max_length=5)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
 
 class Authenticator(models.Model):

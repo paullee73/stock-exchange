@@ -51,8 +51,10 @@ def CreateStock(request):
     if(request.method == 'POST'):
         ticker = request.POST['ticker']
         auth = request.POST['auth']
+        price = request.POST['price']
         post_data = {'ticker': ticker,
-                     'auth': auth}
+                     'auth': auth,
+                     'price': price}
         post_encoded = urllib.parse.urlencode(post_data).encode('utf-8')
         req = urllib.request.Request(
             "http://models-api:8000/stockapp/stock/create", data=post_encoded, method='POST')
@@ -62,6 +64,7 @@ def CreateStock(request):
         kafka_info['ticker'] = resp['ticker symbol']
         kafka_info['id'] = resp['id']
         kafka_info['owner_name'] = resp['owner_name']
+        kafka_info['price'] = resp['price']
         PublishKafka(kafka_info)
         return JsonResponse(resp)
 
