@@ -1,9 +1,20 @@
 language: python
 python:
-  - "3.5"
-
-before_script:
-  - docker-compose up
-
+        - "3.5"
+services:
+         - docker
+         - mysql
+before_install:
+         - docker pull mysql:5.7.23
+         - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/cs4501/db:/var/lib/mysql  mysql:5.7.23
+         - until docker exec -it mysql mysql -uroot -p'$3cureUS' -e exit; do sleep 10; done;
+         - docker exec -it mysql mysql -uroot -p'$3cureUS' -e "create user 'www'@'%' identified by '\$3cureUS';"
+         - docker exec -it mysql mysql -uroot -p'$3cureUS' -e "create database cs4501 character set utf8;"
+         - docker exec -it mysql mysql -uroot -p'$3cureUS' -e "grant all on cs4501.* to 'www'@'%';"
+         - docker exec -it mysql mysql -uroot -p'$3cureUS' -e "grant all on test_cs4501.* to 'www'@'%';"
 script:
-  - python manage.py test
+         - docker-compose -f ./travis/docker-compose.yml up -d
+         - docker exec -it models bash -c "cd models && python manage.py test"
+         - docker exec -it exp bash -c "cd expservice && python manage.py test"
+         - docker exec -it web bash -c "cd frontend && python manage.py test"
+        #  - docker exec -it selenium-test python selenium/selenium_test_script.py
