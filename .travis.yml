@@ -16,4 +16,4 @@ before_install:
 script:
          - docker-compose -f ./travis/docker-compose.yml up -d
          - docker exec -it models bash -c "cd stockexchange && python manage.py test"
-        #  - docker exec -it selenium-test python selenium/selenium_test_script.py
+        #  - docker exec -it selenium-test python selenium/selenium_test.py

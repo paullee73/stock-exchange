@@ -72,5 +72,5 @@ selenium-test:
     - selenium-chrome:selenium-chrome
     - web:web
   volumes:
-    - ../app/selenium:/app/selenium
+    - ../selenium:/app/selenium
   command: bash -c "pip install selenium==3.14.0 && tail -f /dev/null"
