@@ -15,6 +15,6 @@ before_install:
 script:
          - docker-compose -f ./travis/docker-compose.yml up -d
          - docker exec -it models bash -c "cd models && python manage.py test"
-         - docker exec -it exp bash -c "cd expservice && python manage.py test"
-         - docker exec -it web bash -c "cd frontend && python manage.py test"
+         - docker exec -it exp bash -c "cd exp && python manage.py test"
+         - docker exec -it web bash -c "cd web && python manage.py test"
         #  - docker exec -it selenium-test python selenium/selenium_test_script.py
