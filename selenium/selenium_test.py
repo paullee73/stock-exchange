@@ -3,6 +3,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 import sys
 import time
+from selenium.webdriver.common.by import By
 
 
 def get_driver():
@@ -33,17 +34,9 @@ def assert_equals(value, expected, test_name):
     return True
 
 
-def test_create_account(driver):
-    driver.get('http://web:8000/signup/')
-    username = driver.find_element_by_name('username')
-    username.send_keys(test_username)
-    pword = driver.find_element_by_name('password')
-    pword.send_keys(test_pword)
-
-    driver.find_element_by_id('submit').click()
-
-    # should redirect to home
-    if not assert_equals(driver.current_url, 'http://web:8000/home/', sys._getframe().f_code.co_name):
+def access_signup(driver):
+    driver.get('http://web:8000/signup')
+    if not assert_equals(driver.current_url, 'http://web:8000/signup', sys._getframe().f_code.co_name):
         return 1
 
     return 0
@@ -58,7 +51,7 @@ driver = get_driver()
 
 
 # tests
-failed_tests += test_create_account(driver)
+failed_tests += access_signup(driver)
 close_driver(driver)
 
 if failed_tests == 0:
