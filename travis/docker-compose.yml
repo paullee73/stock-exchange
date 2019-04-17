@@ -4,7 +4,7 @@ models:
   external_links:
     - mysql:db
   volumes:
-    - ./models-api:/app
+    - ../models-api:/app
   ports:
     - "8001:8000"
   command: bash -c "python stockexchange/manage.py migrate --run-syncdb && python stockexchange/manage.py loaddata /stockexchange/db.json && mod_wsgi-express start-server --reload-on-changes --working-directory /app/models /app/stockexchange/stockexchange/wsgi.py"
@@ -19,7 +19,7 @@ exp:
   ports:
     - "8002:8000"
   volumes:
-    - ./exp-api:/app
+    - ../exp-api:/app
   command: "mod_wsgi-express start-server --reload-on-changes --working-directory /app/exp /app/exp/exp/wsgi.py"
 
 web:
@@ -30,7 +30,7 @@ web:
   ports:
     - "8000:8000"
   volumes:
-    - ./web-layer:/app
+    - ../web-layer:/app
   command: "mod_wsgi-express start-server --reload-on-changes --working-directory /app/web /app/web/web/wsgi.py"
 
 kafka:
@@ -54,7 +54,7 @@ batch:
       - kafka:kafka
       - es:es
    volumes:
-     - ./batch:/app
+     - ../batch:/app
    command: "python batch/scrp.py"
 
 # selenium-chrome:
