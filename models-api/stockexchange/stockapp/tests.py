@@ -34,7 +34,7 @@ class GetOrderDetailsTestCase(TestCase):
             retrieval = User.objects.get(username='Joe')
             pass
         except ObjectDoesNotExist:
-            self.fail('Error')
+            pass
 
     # tearDown method is called after each test
 
