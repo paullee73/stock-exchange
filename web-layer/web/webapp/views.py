@@ -9,6 +9,7 @@ import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from webapp.forms import SignUpForm, StockForm, SearchForm
+from django.views.decorators.cache import cache_page
 
 # Create your views here.
 
@@ -49,7 +50,7 @@ def addStock(request):
         form = StockForm()
         return render(request, 'create_stock.html', {'form': form})
 
-
+@cache_page(60*1)
 def searchStock(request):
     auth = request.COOKIES.get('auth')
     if not auth:
@@ -106,7 +107,7 @@ def displayLogIn(request):
         form = SignUpForm()
         return render(request, 'login.html', {'form': form})
 
-
+@cache_page(60*1)
 def displaySignUp(request):
     if(request.method == 'POST'):
         form = SignUpForm(request.POST)
@@ -125,7 +126,7 @@ def displaySignUp(request):
         form = SignUpForm()
         return render(request, 'signup.html', {'form': form})
 
-
+@cache_page(60*1)
 def displayStocks(request):
     if (request.method == 'GET'):
         req = urllib.request.Request(
@@ -151,7 +152,7 @@ def logout(request):
         response.delete_cookie('auth')
     return response
 
-
+@cache_page(60*1)
 def userDetail(request, uniqueID):
     if (request.method == 'GET'):
         req = urllib.request.Request(
