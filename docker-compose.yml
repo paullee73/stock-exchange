@@ -27,11 +27,24 @@ web:
   container_name: web
   links:
     - exp:exp-api
+    - redis:redis
   volumes:
     - ./web-layer:/app
   ports:
     - "8000:8000"
-  command: bash -c "mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+  command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+
+web2:
+  image: tp33/django
+  container_name: web2
+  links:
+    - exp:exp-api
+    - redis:redis
+  volumes:
+    - ./web-layer:/app
+  ports:
+    - "8003:8000"
+  command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
 kafka:
    image: spotify/kafka
@@ -57,6 +70,7 @@ batch:
     - ./batch:/app
   command: bash -c "python scrp.py"
 
+<<<<<<< HEAD
 selenium-chrome:
   image: selenium/standalone-chrome
   container_name: selenium-chrome
@@ -74,3 +88,17 @@ selenium-test:
   volumes:
     - ./selenium:/app/selenium
   command: bash -c "pip install selenium==3.14.0 && tail -f /dev/null"
+=======
+
+redis:
+  image: redis
+  container_name: redis
+  ports:
+    - "6379:6379"
+
+haproxy:
+  image: haproxy
+  container_name: haproxy
+  volumes:
+    - ./haproxy:/usr/local/etc/haproxy
+>>>>>>> 856384d371f030356fe76564861ba92260f2dd98
