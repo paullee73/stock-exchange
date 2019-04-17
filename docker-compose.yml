@@ -30,8 +30,6 @@ web:
     - redis:redis
   volumes:
     - ./web-layer:/app
-  ports:
-    - "8000:8000"
   command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
 web2:
@@ -42,8 +40,6 @@ web2:
     - redis:redis
   volumes:
     - ./web-layer:/app
-  ports:
-    - "8003:8000"
   command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
 kafka:
@@ -80,5 +76,10 @@ redis:
 haproxy:
   image: haproxy
   container_name: haproxy
+  ports:
+    - "80:80"
+  links:
+    - web:web
+    - web2:web2
   volumes:
     - ./haproxy:/usr/local/etc/haproxy
