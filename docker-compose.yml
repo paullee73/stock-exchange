@@ -81,7 +81,7 @@ selenium-test:
     - selenium-chrome:selenium-chrome
     - web:web
   volumes:
-    - ./selenium:/app/selenium
+    - ./selenium:/app
   command: bash -c "pip install selenium==3.14.0 && tail -f /dev/null"
 
 redis:
@@ -94,7 +94,7 @@ haproxy:
   image: haproxy
   container_name: haproxy
   ports:
-    - "80:80"
+    - "8000:8000"
   links:
     - web:web
     - web2:web2
