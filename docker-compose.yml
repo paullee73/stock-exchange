@@ -94,7 +94,7 @@ haproxy:
   image: haproxy
   container_name: haproxy
   ports:
-    - "80:80"
+    - "8000:8000"
   links:
     - web:web
     - web2:web2
