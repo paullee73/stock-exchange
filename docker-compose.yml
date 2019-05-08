@@ -1,0 +1,165 @@
+models:
+  image: tp33/django
+  container_name: models
+  external_links:
+    - mysql:db
+  volumes:
+    - ./models-api:/app
+  ports:
+    - "8001:8000"
+  command: bash -c "python stockexchange/manage.py makemigrations && python stockexchange/manage.py migrate && python stockexchange/manage.py loaddata stockexchange/db.json && mod_wsgi-express start-server --working-directory /app/stockexchange --reload-on-changes /app/stockexchange/stockexchange/wsgi.py"
+
+exp:
+  image: tp33/django
+  container_name: exp
+  links:
+    - models:models-api
+    - kafka:kafka
+    - es:es
+  volumes:
+    - ./exp-api:/app
+  ports:
+    - "8002:8000"
+  command: bash -c "mod_wsgi-express start-server --working-directory /app/exp --reload-on-changes /app/exp/exp/wsgi.py"
+
+web:
+  image: tp33/django
+  container_name: web
+  links:
+    - exp:exp-api
+    - redis:redis
+  volumes:
+    - ./web-layer:/app
+  command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+
+web2:
+  image: tp33/django
+  container_name: web2
+  links:
+    - exp:exp-api
+    - redis:redis
+  volumes:
+    - ./web-layer:/app
+  command: bash -c "pip install redis==2.10.0 && pip install django-redis && mod_wsgi-express start-server --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+
+kafka:
+   image: spotify/kafka
+   container_name: kafka
+   environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+   hostname: kafka
+   
+es:
+   image: elasticsearch:2.0
+   container_name: es
+   ports:
+      - "9200:9200"
+
+batch:
+  image: tp33/django
+  container_name: batch
+  links:
+    - kafka:kafka
+    - es:es
+  volumes:
+    - ./batch:/app
+  command: bash -c "python scrp.py"
+
+selenium-chrome:
+  image: selenium/standalone-chrome
+  container_name: selenium-chrome
+  links:
+    - web:web
+  ports:
+    - "4444:4444"
+
+selenium-test:
+  image: tp33/django
+  container_name: selenium-test
+  links:
+    - selenium-chrome:selenium-chrome
+    - web:web
+  volumes:
+    - ./selenium:/app
+  command: bash -c "pip install selenium==3.14.0 && tail -f /dev/null"
+
+redis:
+  image: redis
+  container_name: redis
+  ports:
+    - "6379:6379"
+
+haproxy:
+  image: haproxy
+  container_name: haproxy
+  ports:
+    - "8000:8000"
+  links:
+    - web:web
+    - web2:web2
+  volumes:
+    - ./haproxy:/usr/local/etc/haproxy
+
+spark-master:
+  image: gettyimages/spark
+  command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
+  container_name: spark-master
+  external_links:
+    - mysql:db
+  hostname: spark-master
+  environment:
+    MASTER: spark://spark-master:7077
+    SPARK_CONF_DIR: /conf
+  expose:
+    - 7001
+    - 7002
+    - 7003
+    - 7004
+    - 7005
+    - 7006
+    - 7077
+    - 6066
+  ports:
+    - 4040:4040
+    - 6066:6066
+    - 7077:7077
+    - 8080:8080
+  volumes:
+    - ./data:/tmp/data
+
+spark-worker:
+  image: gettyimages/spark
+  command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+  container_name: spark-worker
+  external_links:
+    - mysql:db
+  hostname: spark-worker
+  environment:
+    SPARK_CONF_DIR: /conf
+    SPARK_WORKER_CORES: 2
+    SPARK_WORKER_MEMORY: 512m
+    SPARK_WORKER_PORT: 8881
+    SPARK_WORKER_WEBUI_PORT: 8081
+  links:
+    - spark-master
+  expose:
+    - 7012
+    - 7013
+    - 7014
+    - 7015
+    - 7016
+    - 8881
+  ports:
+    - 8081:8081
+  volumes:
+    - ./data:/tmp/data
+
+spark-batch:
+  image: tp33/django
+  container_name: spark-batch
+  links:
+    - kafka:kafka
+  volumes:
+    - ./data:/tmp/data
+  command: bash -c "python /tmp/data/script.py"

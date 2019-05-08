@@ -1,0 +1,12 @@
+{% extends 'base_header.html' %}
+{% load static %}
+{% block content %}
+<center style="margin-top: 5%">
+    <h2>Search Stock</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search Stock</button>
+    </form>
+</center>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base_header.html" %}
+{% load static %}
+{% block content %}
+
+<h2>Users</h2>
+<p>User Profile</p>
+<table>
+    <tr>
+        <th>Ticker</th>
+        <th>Price</th>
+        <th>Owner</th>
+    </tr>
+    <tr>
+        <td> {{ resp.ticker_symbol }}</td>
+        <td> {{ resp.price }}</td>
+        <td> {{ resp.owner }}</td>
+    </tr>
+</table>
+{% endblock %}

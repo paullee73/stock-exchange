@@ -1,0 +1,47 @@
+<html>
+   <body>
+      
+      <form name = "form" action = "display" 
+         method = "POST" >{% csrf_token %}
+        
+         <div style = "max-width:470px;">
+            <center>
+               <input type = "text" style = "margin-left:20%;" 
+                  placeholder = "Username" name = "username" />
+            </center>
+         </div>
+			
+         <br>
+         
+         <div style = "max-width:470px;">
+            <center>
+               <input type = "password" style = "margin-left:20%;" 
+                  placeholder = "Password" name = "password" />
+            </center>
+         </div>
+
+         <div style = "max-width:470px;">
+            <center>
+               <input type = "number" step='0.01' value='0.00' style = "margin-left:20%;" 
+                  placeholder = "Balance" name = "balance" />
+            </center>
+         </div>
+			
+         <br>
+         
+         <div style = "max-width:470px;">
+            <center> 
+            
+               <button style = "border:0px; background-color:#4285F4; margin-top:8%;
+                  height:35px; width:80%;margin-left:19%;" type = "submit" 
+                  value = "Submit" >
+                  <strong>Submit</strong>
+               </button>
+               
+            </center>
+         </div>
+         
+      </form>
+      
+   </body>
+</html>

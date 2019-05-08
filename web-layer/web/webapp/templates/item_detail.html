@@ -1,0 +1,30 @@
+{% extends "base_header.html" %}
+{% load static %}
+{% block content %}
+
+<center style="margin-top: 5%">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Stock ID</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Username</th>
+        <th scope="col">User ID</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key in resplist %}
+      <tr>
+        <td><a <a href="{% url 'stock_detail' key.id %}"> {{ key.id }}</a></td>
+        <td>{{ key.ticker_sym }}</td>
+        <td>{{ key.username}}</td>
+        <td><a <a href="{% url 'user_detail' key.user_id %}"> {{ key.user_id }}</a></td>
+        <td>{{ key.price}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</center>
+
+{% endblock %}

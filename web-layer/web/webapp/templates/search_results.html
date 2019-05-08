@@ -1,0 +1,27 @@
+{% extends 'base_header.html' %}
+{% load static %}
+{% block content %}
+<center style="margin-top: 5%">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Stock ID</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Username</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ key }}
+            {% for key in output %}
+            <tr>
+                <td>{{ key.id}}</td>
+                <td>{{ key.ticker }}</td>
+                <td>{{ key.owner_name}}</td>
+                <td>{{ key.price}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</center>
+{% endblock %}
